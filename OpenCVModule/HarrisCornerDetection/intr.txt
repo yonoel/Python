@@ -1,0 +1,36 @@
+Goal
+In this chapter,
+
+We will understand the concepts behind Harris Corner Detection.
+We will see the functions: cv.cornerHarris(), cv.cornerSubPix()
+
+Theory
+不多说，有兴趣再查
+One early attempt to find these corners was done by Chris Harris & Mike Stephens in their paper A Combined Corner and Edge Detector in 1988, so now it is called Harris Corner Detector.
+Then comes the main part. After this, they created a score, basically an equation, which will determine if a window can contain a corner or not.
+
+R=det(M)−k(trace(M))2
+
+where
+
+det(M)=λ1λ2
+trace(M)=λ1+λ2
+λ1 and λ2 are the eigen values of M
+
+So the values of these eigen values decide whether a region is corner, edge or flat.
+
+When |R| is small, which happens when λ1 and λ2 are small, the region is flat.
+When R<0, which happens when λ1>>λ2 or vice versa, the region is edge.
+When R is large, which happens when λ1 and λ2 are large and λ1∼λ2, the region is a corner.
+
+
+
+Harris Corner Detector in OpenCV：
+
+！！！OpenCV has the function cv.cornerHarris() for this purpose. Its arguments are :
+
+img - Input image, it should be grayscale and float32 type.
+blockSize - It is the size of neighbourhood considered for corner detection
+ksize - Aperture parameter of Sobel derivative used.
+k - Harris detector free parameter in the equation
+

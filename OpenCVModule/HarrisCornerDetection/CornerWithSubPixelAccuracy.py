@@ -1,3 +1,4 @@
+# Subpixel accuracy 亚像素精度
 import numpy as np
 import cv2 as cv
 filename = 'chessboard2.png'

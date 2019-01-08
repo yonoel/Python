@@ -1,0 +1,31 @@
+OpenCV-Python Tutorials
+Feature Detection and Description
+Shi-Tomasi Corner Detector & Good Features to Track
+Goal
+In this chapter,
+
+We will learn about the another corner detector: Shi-Tomasi Corner Detector
+We will see the function: cv.goodFeaturesToTrack()
+
+Theory
+
+In last chapter, we saw Harris Corner Detector.
+Later in 1994, J. Shi and C. Tomasi made a small modification to it in their paper Good Features to Track which shows better results compared to Harris Corner Detector
+The scoring function in Harris Corner Detector was given by:
+
+R=λ1λ2−k(λ1+λ2)2
+Instead of this, Shi-Tomasi proposed:
+
+R=min(λ1,λ2)
+
+Code
+OpenCV has a function, cv.goodFeaturesToTrack().
+It finds N strongest corners in the image by Shi-Tomasi method (or Harris Corner Detection, if you specify it).
+
+ As usual, image should be a grayscale image.
+ Then you specify number of corners you want to find. Then you specify the quality level, which is a value between 0-1, which denotes the minimum quality of corner below which everyone is rejected.
+ Then we provide the minimum euclidean distance between corners detected.
+
+ With all this information, the function finds corners in the image.
+ All corners below quality level are rejected. Then it sorts the remaining corners based on quality in the descending order.
+ Then function takes first strongest corner, throws away all the nearby corners in the range of minimum distance and returns N strongest corners.

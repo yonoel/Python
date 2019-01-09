@@ -8,7 +8,8 @@ while(True):
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     # Display the resulting frame
     cv.imshow('frame',gray)
-    if cv.waitKey(1) & 0xFF == ord('q'):
+
+    if cv.waitKey(10) & 0xFF == ord('q'):
         break
 # When everything done, release the capture
 cap.release()

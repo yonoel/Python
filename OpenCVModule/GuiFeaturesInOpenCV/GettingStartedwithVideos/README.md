@@ -17,6 +17,12 @@ while(True):
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     # Display the resulting frame
     cv.imshow('frame',gray)
+    ```On some systems, waitKey() may return a value that encodes more than just the ASCII keycode. (A bug is known to occur on Linux when OpenCV uses GTK as its backend GUI 
+    library.) On all systems, we can ensure that we extract just the SCII keycode by reading the last byte from the return value like this: 
+    keycode = cv2.waitKey(1) 
+    if keycode != -1: 
+    keycode &= 0xFF```
+
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 # When everything done, release the capture

@@ -38,4 +38,3 @@ def fn1():
 personb.fn = fn1
 
 personb.fn()
-

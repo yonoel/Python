@@ -65,4 +65,40 @@ rows,cols = img.shape
 M = cv.getRotationMatrix2D(((cols-1)/2.0,(rows-1)/2.0),90,1)
 dst = cv.warpAffine(img,M,(cols,rows))
 ```
+# Affine Transformation(仿射变换（映射）)
+百度定义：仿射变换，又称仿射映射，是指在几何中，一个向量空间进行一次线性变换并接上一个平移，变换为另一个向量空间。
+// todo 看不懂，先跳过,向量一脸懵
+Check below example, and also look at the points I selected (which are marked in Green color):
+```
+img = cv.imread('drawing.png')
+rows,cols,ch = img.shape
+pts1 = np.float32([[50,50],[200,50],[50,200]])
+pts2 = np.float32([[10,100],[200,50],[100,250]])
+M = cv.getAffineTransform(pts1,pts2)
+dst = cv.warpAffine(img,M,(cols,rows))
+plt.subplot(121),plt.imshow(img),plt.title('Input')
+plt.subplot(122),plt.imshow(dst),plt.title('Output')
+plt.show()
+```
+
+# Perspective Transformation(透视)
+百度定义:将图片投影到一个新的视平面(Viewing Plane),也称作投影映射(Projective Mapping)
+
+For perspective transformation, you need a 3x3 transformation matrix.Straight lines will remain straight even after the transformation. 
+
+o find this transformation matrix, you need 4 points on the input image and corresponding points on the output image.
+
+Among these 4 points, 3 of them should not be collinear. Then transformation matrix can be found by the function cv.getPerspectiveTransform. Then apply cv.warpPerspective with this 3x3 transformation matrix.
+
+```
+img = cv.imread('sudoku.png')
+rows,cols,ch = img.shape
+pts1 = np.float32([[56,65],[368,52],[28,387],[389,390]])
+pts2 = np.float32([[0,0],[300,0],[0,300],[300,300]])
+M = cv.getPerspectiveTransform(pts1,pts2)
+dst = cv.warpPerspective(img,M,(300,300))
+plt.subplot(121),plt.imshow(img),plt.title('Input')
+plt.subplot(122),plt.imshow(dst),plt.title('Output')
+plt.show()
+```
 

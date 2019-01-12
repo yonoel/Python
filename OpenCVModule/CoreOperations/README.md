@@ -118,7 +118,7 @@ If you want to create a border around the image, something like a photo frame, y
 <li> top, bottom, left, right - border width in number of pixels in corresponding directions
 <li> borderType - Flag defining what kind of border to be added. It can be following types:
   <ul> cv.BORDER_CONSTANT - Adds a constant colored border. The value should be given as next argument.
-  <li> cv.BORDER
+  <li> cv.BORDER_REFLECT - Border will be mirror reflection of the border elements, like this : fedcba|abcdefgh|hgfedcb
   <li> cv.BORDER_REFLECT_101 or cv.BORDER_DEFAULT - Same as above, but with a slight change, like this : gfedcb|abcdefgh|gfedcba
   <li> cv.BORDER_REPLICATE - Last element is replicated throughout, like this: aaaaaa|abcdefgh|hhhhhhh
   <li> cv.BORDER_WRAP - Can't explain, it will look like this : cdefgh|abcdefgh|abcdefg</ul>

@@ -46,4 +46,4 @@ threads.append(thread2)
 # Wait for all threads to complete
 for t in threads:
     t.join()
-print "Exiting the Program!!!"
+print ("Exiting the Program!!!")

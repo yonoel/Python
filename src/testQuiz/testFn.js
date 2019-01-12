@@ -1,5 +1,6 @@
 // 测试默认参数
 function fn (val,list=[]) {
+    // push 返回数组长度
     let n = list.push()
 
     return n;

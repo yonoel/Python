@@ -1,2 +1,2 @@
 # testModule
-all about some tests
+all about python 

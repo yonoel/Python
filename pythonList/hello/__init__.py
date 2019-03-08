@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-' a test module '
+' a Test module '
 
 __author__ = 'Michael Liao'
 

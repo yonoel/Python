@@ -9,6 +9,7 @@ class QuotesSpider(scrapy.Spider):
 
     def parse(self, response):
         pages = response.css("dl.links dt a").getall()
+        self.savePageInHtml(self,response)
         for next_page in pages:
             next_page = next_page.split("\"")[1]
             if next_page is not None:

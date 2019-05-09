@@ -1,6 +1,7 @@
 # encoding:utf-8
 import cv2
 import numpy as np
+from utils import util
 
 
 # 将img的高度调整为28，先后对图像进行如下操作：直方图均衡化，形态学，阈值分割
@@ -16,12 +17,24 @@ def pre_treat(img):
 
 
 def get_roi_list(contours):
-    rect_list = []
+    rect_list, pre_x_plus_w = [], 0
     for i in range(len(contours)):
-        rect2 = cv2.boundingRect(contours[i])
-        if rect2[3] > 10:
-            rect_list.append(rect2)
-    return rect_list
+        rect = cv2.boundingRect(contours[i])
+        if rect[3] > 10:
+            rect_list.append(rect)
+    rect_list = sorted(rect_list, key=lambda o: o[0])
+
+    ret_list = []
+    for i in range(len(rect_list)):
+        rect = rect_list[i]
+        x, w = rect[0], rect[2]
+        print("rect[i]'s x is %d and w is %d h is %d" % (rect[0], rect[2], rect[3]))
+        if pre_x_plus_w > x:
+            x = rect_list[i-1][0]
+            del ret_list[i-1]
+        #     w = pre_x_plus_w
+        ret_list.append((x, 0, w, 28))
+    return ret_list
 
 
 def get_img_list(rect_list):
@@ -84,18 +97,23 @@ def seg_num(img):
 
 
 if __name__ == "__main__":
-    img = cv2.imread("代码区域.jpg")
+    img = cv2.imread("num.jpg")
     img = pre_treat(img)
     contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     rect_list = get_roi_list(contours)
-    for rect in rect_list:
-        x = rect[0]
-        y = rect[1]
-        w = rect[2]
-        h = rect[3]
-        # cv2.rectangle(img, (x, y), (x + w, y + h), 255, 1)
-        print("the rect is ", x, y, x + w, y + h)
+    print(len(rect_list))
+    if len(rect_list) > 0:
+        for i in range(len(rect_list)):
+            rect = rect_list[i]
+            x = rect[0]
+            y = rect[1]
+            w = rect[2]
+            h = rect[3]
+            cv2.rectangle(img, (x, y), (x + w, y+h), 255, 1)
+        # cv2.imwrite("char" + str(i) + ".jpg", img[y:h, x:w])
+
+    #     print("the rect is ", x, y, x + w, y + h)
     # img_list = get_img_list(rect_list)
     showImgInCV(img)
     # img_num = seg_num(img)

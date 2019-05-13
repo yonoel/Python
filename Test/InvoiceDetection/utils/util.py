@@ -3,9 +3,15 @@ import cv2 as cv
 from matplotlib import pyplot as plt
 
 
-def template_match(template, src, method=cv.TM_CCOEFF):
-    img = src.copy()
-    return cv.matchTemplate(img, template, method)
+def get_u_d_l_r(rect_):
+    # 获取rect的上下左右边界值
+    upper_, down_ = rect_[1], rect_[1] + rect_[3]
+    left_, right_ = rect_[0], rect_[0] + rect_[2]
+    return upper_, down_, left_, right_
+
+
+def get_top_left_bottom_right_(rect):
+    return rect[1], rect[0], rect[3] + rect[1], rect[0] + rect[2]
 
 
 def to_binary(src):

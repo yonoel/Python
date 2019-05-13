@@ -12,7 +12,8 @@ def image_read(filename, flags=cv.IMREAD_GRAYSCALE):
 
 def to_binary(src):
     img = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
-    mask = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 7, 7)
+    mask = cv.adaptiveThreshold(
+        img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 7, 7)
     return mask
 
 
@@ -26,7 +27,8 @@ def morphological(img):
 
 
 def draw_contours(src):
-    contours, hierarchy = cv.findContours(src, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv.findContours(
+        src, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE)
     cv.drawContours(src, contours, -1, (0, 255, 0))
 
 
@@ -71,68 +73,24 @@ def change(src):
     return dst
 
 
+def find_code_roi(src):
+    pass
+
+
 img_path_suffix = "./resources/"
+resize_path_suffix = "./resize/"
 
 if __name__ == '__main__':
-    # 正的图片取minlox厚切,不正的反过来
-    qr = image_read("QR.jpg", 0)
-    # qr = cv.cvtColor(qr, cv.COLOR_BGR2GRAY)
-    qr = cv.adaptiveThreshold(qr, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 7, 7)
-    src = image_read(img_path_suffix + "110.jpg", 0)
-    # src = cv.cvtColor(src, cv.COLOR_GRAY2RGB)
-    res = cv.matchTemplate(src, qr, cv.TM_CCOEFF)
-    # res = template_match(qr, src)
-    a, b, minLoc, maxLox = cv.minMaxLoc(res)
-    cv.circle(src, minLoc, 10, 255, thickness=10)
-    # top = b
-    # x, y, n = qr.shape
-    # img = src[top[1]:y, top[0]:x]
-    # show_img_in_cv(src)
-    show_img_in_cv(src)
-    # for root, dirs, files in os.walk("./numrois"):
-    #     for file in files:
-    #         path = os.path.join(root, file)
-    #         src = cv.imread(path)
-    #         config = "--psm 13"
-    #         print(path, "  ", pytesseract.image_to_string(to_binary(src), lang="eng", config=config))
-    # src = image_read(path)
-    # res = template_match(no, src)
-    # num_rect = get_invoice_num_roi(res, no, src)
+    filename = "110.jpg"
+    temp_no = "NO2.jpg"
+    path = resize_path_suffix + filename
+    image = cv.imread(path, 0)
+    temp_no = cv.imread(temp_no,0)
+    res = cv.matchTemplate(image,temp_no,cv.TM_CCOEFF)
+    min_val, max_val, min_loc, max_lox = cv.minMaxLoc(res)
+    print(min_loc[0],min_loc[1])
+    print(max_lox[0],max_lox[1])
+    # cv.circle(image,max_lox,20,255,10)
+    # show_img_in_cv(image)
 
-    # x = num_rect[0]
-    # y = num_rect[1]
-    # w = num_rect[2]
-    # h = num_rect[3]
-    # cv.imwrite("./numrois/"+file.replace(".jpg", "")+"num.jpg", src[y:h, x:w])
-    #
-    # num_rect = get_invoice_num_roi(res, no, src)
-    #
-    # x = num_rect[0]
-    # y = num_rect[1]
-    # w = num_rect[2]
-    # h = num_rect[3]
 
-    # print(x, y, w, h)
-    # cv.circle(src, (max_lox[0], max_lox[1]), 30, 255)
-    # cv.rectangle(src, (x, y), (w, h), 255, 3)
-    # show_img_in_ply(src)
-#
-# inner_img = src[y:h, x:w]
-# inner_img = to_binary(inner_img)
-# cv.imwrite("num.jpg", inner_img)
-# contours, hierarchy = cv.findContours(out, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-
-#     try:
-#         w = rect[2]
-#         h = rect[3]
-#         ratio = w / h
-#         if 5.5 < ratio < 6:
-#             print("1")
-#     except TypeError:
-#         print("发生异常")
-# showImgInCV(out)
-
-# print(len(region))
-# showImgInCV(out)
-# no = toBinary(no)
-# output = drawFpdmROI()

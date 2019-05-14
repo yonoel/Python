@@ -1,15 +1,19 @@
 # coding:utf-8
 import cv2 as cv
 import pytesseract as tesseract
-
-
+import os
 class Detector:
     width = 1200
     temp_no = cv.imread("NO.jpeg", 0)
 
+   
+
     def __init__(self, path):
         self.image = cv.imread(path, 0)
-        self.pre_treat()
+        if self.image is None:raise FileNotFoundError(path)
+        self.rois = []
+        self.pre_treat_image()
+        self.set_rois()
 
     def pre_treat_image(self):
         self.resize()
@@ -19,8 +23,8 @@ class Detector:
         ratio = float(width / height)
         self.image = cv.resize(self.image, (int(self.width * ratio), self.width))
 
-    def get_roi_list(self):
-        roi_list = []
+    def set_rois(self):
+
         match_point = self.get_match_point()
         temp_width, temp_height = self.temp_no.shape
 
@@ -31,9 +35,9 @@ class Detector:
 
         roi_num = self.image[num_top_left[1]:num_bottom_right[1], num_top_left[0]:num_bottom_right[0]]
         roi_code = self.image[code_top_left[1]:code_bottom_right[1], code_top_left[0]:code_bottom_right[0]]
-        roi_list.append(roi_num)
-        roi_list.append(roi_code)
-        return roi_list
+        self.rois.append(roi_code)
+        self.rois.append(roi_num)
+      
 
     def get_match_point(self):
         no_res = cv.matchTemplate(self.image, self.temp_no, cv.TM_CCOEFF)
@@ -46,25 +50,38 @@ class Detector:
             match_point = max_lox
         return match_point
 
-    @staticmethod
-    def pre_treat_roi(img):
-        # 最好能垂直图片，并根据投影法分割数字，一个个去比对
+    def get_invoice_code(self):
+        code = self.rois[0]
+        code = self.pre_treat_roi(code)
+        return self.do_ocr(code)
+
+    def get_invoice_number(self):
+        number = self.rois[1]
+        number = self.pre_treat_roi(number)
+        return self.do_ocr(number)  
+
+   
+    def pre_treat_roi(self,img):
+        # 最好根据投影法分割数字，一个个去比对
         img = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 9, 7)
         kernel = cv.getStructuringElement(cv.MORPH_RECT, (2, 2))  # 形态学处理:定义矩形结构
         closed = cv.erode(img, kernel, iterations=2)
         closed = cv.GaussianBlur(closed, (3, 3), 1)
         return closed
 
-    @staticmethod
-    def get_nums(roi):
+
+    def do_ocr(self,roi):
         config = "--psm 13 digits"
         return tesseract.image_to_string(roi, config=config)
 
 
 if __name__ == '__main__':
-    resize_path_suffix = "./resize/"
-    resources_path_suffix = "./resources/"
-    image = "2019_04_18_155557571564410.jpg"
-    roi = cv.imread("test.jpg")
-    num = Detector.get_nums(roi)
-    print(num)
+    fileName = "C://Users//Think//Desktop//scanner-images"
+    for root,dirs,files in os.walk(fileName):
+       for f in files:
+           if f.endswith(".jpg"):
+               path = os.path.join(root,f)
+               de = Detector(path)
+               code = de.get_invoice_code()
+               number = de.get_invoice_number()
+               print("file is %s and code is %s and number is %s "%(f,code,number))

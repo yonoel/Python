@@ -2,6 +2,8 @@
 import cv2 as cv
 import pytesseract as tesseract
 import os
+from matplotlib import pyplot as plt
+from utils import util
 class Detector:
     width = 1200
     temp_no = cv.imread("NO.jpeg", 0)
@@ -28,8 +30,8 @@ class Detector:
         match_point = self.get_match_point()
         temp_width, temp_height = self.temp_no.shape
 
-        num_top_left = (match_point[0] + temp_width, match_point[1])
-        num_bottom_right = (num_top_left[0] + 7 * temp_width, num_top_left[1] + temp_height)
+        num_top_left = (int(match_point[0] + temp_width), match_point[1])
+        num_bottom_right = (int(num_top_left[0] +  temp_width), num_top_left[1] + temp_height)
         code_top_left = (match_point[0] - temp_width * 23, match_point[1])
         code_bottom_right = (code_top_left[0] + 9 * temp_width, code_top_left[1] + 2 * temp_height)
 
@@ -52,36 +54,61 @@ class Detector:
 
     def get_invoice_code(self):
         code = self.rois[0]
-        code = self.pre_treat_roi(code)
+        # code = self.pre_treat_roi(code)
         return self.do_ocr(code)
 
     def get_invoice_number(self):
         number = self.rois[1]
-        number = self.pre_treat_roi(number)
+        # number = self.pre_treat_roi(number)
         return self.do_ocr(number)  
 
    
     def pre_treat_roi(self,img):
-        # 最好根据投影法分割数字，一个个去比对
+       
         img = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 9, 7)
         kernel = cv.getStructuringElement(cv.MORPH_RECT, (2, 2))  # 形态学处理:定义矩形结构
         closed = cv.erode(img, kernel, iterations=2)
         closed = cv.GaussianBlur(closed, (3, 3), 1)
         return closed
 
+    # 根据投影法切割图片
+    def do_split_char(self,img):
+        # 仅单独切割发票号码区域8位
+        height,width = img.shape[:2]
+        ret,binary = cv.threshold(img,127,255,cv.THRESH_BINARY)
+        kernel = cv.getStructuringElement(cv.MORPH_RECT,(3,3))
+        closed = cv.erode(binary,kernel=kernel,iterations=3)
+
+        x = 0 * width
+        y = 0 * height
+        acc = 0 
+        pass
+
 
     def do_ocr(self,roi):
         config = "--psm 13 digits"
         return tesseract.image_to_string(roi, config=config)
 
+def show_img_in_pl(img):
+    plt.subplot(121), plt.imshow(img, cmap="gray"), plt.title("result is")
+    plt.show()
 
 if __name__ == '__main__':
-    fileName = "C://Users//Think//Desktop//scanner-images"
-    for root,dirs,files in os.walk(fileName):
-       for f in files:
-           if f.endswith(".jpg"):
-               path = os.path.join(root,f)
-               de = Detector(path)
-               code = de.get_invoice_code()
-               number = de.get_invoice_number()
-               print("file is %s and code is %s and number is %s "%(f,code,number))
+    name = ".//resources//2019_04_18_155557571509273.jpg"
+    de = Detector(name)
+    utils.util.show_img_in_pl(de.rois[1])
+    # show_img_in_pl(number)
+    # n = de.do_ocr(number)
+    # print(n)
+    # show_img_in_pl(de.pre_treat_roi(number))
+    # show_img_in_pl(code)
+    # print(de.get_invoice_number()+"    "+ de.get_invoice_code())
+    # fileName = "C://Users//Think//Desktop//scanner-images"
+    # for root,dirs,files in os.walk(fileName):
+    #    for f in files:
+    #        if f.endswith(".jpg"):
+    #            path = os.path.join(root,f)
+    #            de = Detector(path)
+    #            code = de.get_invoice_code()
+    #            number = de.get_invoice_number()
+    #            print("file is %s and code is %s and number is %s "%(f,code,number))

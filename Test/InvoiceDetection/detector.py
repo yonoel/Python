@@ -49,10 +49,10 @@ class Detector:
         roi_code = self.image[code_top_left[1]:code_bottom_right[1],
                               code_top_left[0]:code_bottom_right[0]]
 
-        roi_code = cv.flip(roi_code,90)
+        roi_code = cv.flip(roi_code, 90)
         code_width = get_width_by_projection(roi_code, 300)
-        roi_code = roi_code[0:roi_code.shape[0],code_width[0]:code_width[1]]
-        roi_code = cv.flip(roi_code,90)
+        roi_code = roi_code[0:roi_code.shape[0], code_width[0]:code_width[1]]
+        roi_code = cv.flip(roi_code, 90)
 
         self.rois.append(roi_code)
         self.rois.append(roi_num)
@@ -181,8 +181,8 @@ if __name__ == '__main__':
 
                 roi_code = de.rois[0]
                 roi_number = de.rois[1]
-    # cv.imwrite(
-    # "/Users/yonoel/Desktop/PythonWorkspace/Python/Test/InvoiceDetection/coderois/"+f, roi_code)
-                util.show_img_in_pl(roi_code)
+                cv.imwrite(
+            "/Users/yonoel/Desktop/PythonWorkspace/Python/Test/InvoiceDetection/coderois/"+f, roi_code)
+        # util.show_img_in_pl(roi_code)
     # util.show_img_in_pl(roi_number)
     # print("file is %s and code is %s and number is %s "%(f,code,number))

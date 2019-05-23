@@ -1,3 +1,27 @@
 .idea/
 unupload/
 *.code-workspace
+Test/InvoiceDetection/utils/__pycache__/util.cpython-37.pyc
+.DS_Store
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/.ropeproject/config.py
+.vscode/.ropeproject/objectdb
+OpenCVModule/ImageProcessing/.DS_Store
+Scrpy/Scrapy Tutorial/tutoial/tutoial/__pycache__/__init__.cpython-37.pyc
+Scrpy/Scrapy Tutorial/tutoial/tutoial/__pycache__/settings.cpython-37.pyc
+Scrpy/Scrapy Tutorial/tutoial/tutoial/spiders/__pycache__/QuotesSpider.cpython-37.pyc
+Scrpy/Scrapy Tutorial/tutoial/tutoial/spiders/__pycache__/__init__.cpython-37.pyc
+Scrpy/Scrapy Tutorial/tutoial/tutoial/spiders/__pycache__/quotes_spider.cpython-37.pyc
+Test/.DS_Store
+Test/InvoiceDetection/.DS_Store
+Test/InvoiceDetection/.vscode/launch.json
+Test/InvoiceDetection/.vscode/settings.json
+Test/InvoiceDetection/resources/2019_04_18_155557580211930.jpg
+Test/InvoiceDetection/utils/__pycache__/__init__.cpython-37.pyc
+Test/sgyt/.DS_Store
+Test/sgyt/sgyt/__pycache__/__init__.cpython-37.pyc
+Test/sgyt/sgyt/__pycache__/settings.cpython-37.pyc
+Test/sgyt/sgyt/spiders/__pycache__/__init__.cpython-37.pyc
+Test/sgyt/sgyt/spiders/__pycache__/c++spider.cpython-37.pyc
+Test/sgyt/sgyt/spiders/__pycache__/spiderAll.cpython-37.pyc

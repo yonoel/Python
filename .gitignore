@@ -1,8 +1,6 @@
-pornhub/
 .idea/
 .vscode/
 unupload/
-*.code-workspace
 Test/InvoiceDetection/utils/__pycache__/util.cpython-37.pyc
 .DS_Store
 .vscode/launch.json
